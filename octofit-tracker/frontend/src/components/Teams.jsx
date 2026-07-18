@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
-import { apiBase, normalizeArray } from './api';
+import { normalizeArray } from './api.js';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
+const teamsEndpoint = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/teams/`
+  : 'http://localhost:8000/api/teams/';
 
 function Teams() {
   const [teams, setTeams] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${apiBase}/teams/`)
+    fetch(teamsEndpoint)
       .then((res) => res.json())
       .then((json) => setTeams(normalizeArray(json, 'teams')))
       .catch(() => setError('Unable to load teams.'));

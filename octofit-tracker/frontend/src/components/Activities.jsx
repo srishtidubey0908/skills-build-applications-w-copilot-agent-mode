@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
-import { apiBase, normalizeArray } from './api';
+import { normalizeArray } from './api.js';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
+const activitiesEndpoint = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/';
 
 function Activities() {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${apiBase}/activities/`)
+    fetch(activitiesEndpoint)
       .then((res) => res.json())
       .then((json) => setActivities(normalizeArray(json, 'activities')))
       .catch(() => setError('Unable to load activities.'));

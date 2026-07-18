@@ -1,10 +1,10 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import Activities from './components/Activities';
-import Leaderboard from './components/Leaderboard';
-import Teams from './components/Teams';
-import Users from './components/Users';
-import Workouts from './components/Workouts';
-import { apiBase, codespaceName } from './components/api';
+import Activities from './components/Activities.jsx';
+import Leaderboard from './components/Leaderboard.jsx';
+import Teams from './components/Teams.jsx';
+import Users from './components/Users.jsx';
+import Workouts from './components/Workouts.jsx';
+import { apiBase, codespaceName } from './components/api.js';
 
 function App() {
   return (
