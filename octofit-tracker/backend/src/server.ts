@@ -1,6 +1,5 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import db from './config/database.js';
+import { connectDatabase } from './config/database.js';
 import usersRouter from './routes/users.js';
 import teamsRouter from './routes/teams.js';
 import activitiesRouter from './routes/activities.js';
@@ -11,7 +10,7 @@ const app = express();
 const port = Number(process.env.PORT || 8000);
 const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
-  ? `https://${codespaceName}-8000.githubpreview.dev`
+  ? `https://${codespaceName}-8000.app.github.dev`
   : `http://localhost:${port}`;
 
 app.use(express.json());
@@ -29,12 +28,15 @@ app.get('/api', (_req, res) => {
   res.json({ message: 'Welcome to OctoFit Tracker backend', baseUrl });
 });
 
-mongoose.connection.once('open', () => {
+async function startServer() {
+  await connectDatabase();
+
   app.listen(port, () => {
     console.log(`Backend listening on ${baseUrl}`);
   });
-});
+}
 
-mongoose.connection.on('error', (error) => {
-  console.error('MongoDB connection error:', error);
+startServer().catch((error) => {
+  console.error('Failed to start backend:', error);
+  process.exit(1);
 });
